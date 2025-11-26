@@ -2746,6 +2746,11 @@ export class EventSetupComponent implements OnInit {
     this.closeExhibitorModal();
   }
 
+  onAboutSave(aboutData: any) {
+    console.log("About content saved:", aboutData);
+    this.editAboutContent = false;
+  }
+
   loadExhibitors() {
     this.exhibitors = this.exhibitorService.getExhibitorsByEvent(this.eventId);
   }
