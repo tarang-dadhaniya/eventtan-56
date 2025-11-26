@@ -312,7 +312,7 @@ export class AboutDetailModalComponent implements OnInit, OnChanges {
     this.loadInitialData();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.isOpen) {
       this.loadInitialData();
     }
