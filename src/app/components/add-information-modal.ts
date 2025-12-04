@@ -2,6 +2,11 @@ import { Component, Output, EventEmitter, Input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
+interface FeaturedImage {
+  file: File;
+  preview: string;
+}
+
 @Component({
   selector: "app-add-information-modal",
   standalone: true,
@@ -591,29 +596,77 @@ import { FormsModule } from "@angular/forms";
 
             <!-- Featured Images -->
             <div>
-              <label class="block text-base font-medium text-[#212529] mb-2"
+              <label class="block text-base font-medium text-[#212529] mb-[7px]"
                 >Featured Images</label
               >
               <div
-                class="border border-dashed border-[#B9BBBC] rounded h-[120px] flex flex-col items-center justify-center cursor-pointer hover:border-[#009FD8] transition-colors"
-                (click)="featuredImagesInput.click()"
+                class="border border-dashed border-[#B9BBBC] rounded min-h-[120px] p-5 relative"
               >
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="mb-2"
+                <div
+                  *ngIf="featuredImages.length === 0"
+                  class="flex flex-col items-center justify-center h-full cursor-pointer"
+                  (click)="featuredImagesInput.click()"
                 >
-                  <path
-                    d="M25.0037 27.6419H19.8316H18.4389H18.1381V20.7045H20.407C20.9824 20.7045 21.3224 20.0506 20.9824 19.5798L16.5689 13.4727C16.2877 13.0804 15.7058 13.0804 15.4246 13.4727L11.011 19.5798C10.671 20.0506 11.0045 20.7045 11.5864 20.7045H13.8553V27.6419H13.5546H12.1618H6.16592C2.73314 27.4523 0 24.2418 0 20.7633C0 18.3636 1.30119 16.2713 3.23008 15.1401C3.05354 14.6628 2.96199 14.1528 2.96199 13.6166C2.96199 11.1646 4.9432 9.18341 7.39518 9.18341C7.92481 9.18341 8.43482 9.27495 8.91214 9.45149C10.331 6.44373 13.3911 4.35791 16.9481 4.35791C21.5513 4.36445 25.3437 7.88876 25.7752 12.3808C29.3126 12.9889 32 16.2647 32 19.9721C32 23.9345 28.9138 27.3673 25.0037 27.6419Z"
-                    fill="#878A99"
-                  />
-                </svg>
-                <p class="text-base font-medium text-[#212529]">
-                  Drop Images here or click to upload.
-                </p>
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="mb-2"
+                  >
+                    <path
+                      d="M25.0037 27.6419H19.8316H18.4389H18.1381V20.7045H20.407C20.9824 20.7045 21.3224 20.0506 20.9824 19.5798L16.5689 13.4727C16.2877 13.0804 15.7058 13.0804 15.4246 13.4727L11.011 19.5798C10.671 20.0506 11.0045 20.7045 11.5864 20.7045H13.8553V27.6419H13.5546H12.1618H6.16592C2.73314 27.4523 0 24.2418 0 20.7633C0 18.3636 1.30119 16.2713 3.23008 15.1401C3.05354 14.6628 2.96199 14.1528 2.96199 13.6166C2.96199 11.1646 4.9432 9.18341 7.39518 9.18341C7.92481 9.18341 8.43482 9.27495 8.91214 9.45149C10.331 6.44373 13.3911 4.35791 16.9481 4.35791C21.5513 4.36445 25.3437 7.88876 25.7752 12.3808C29.3126 12.9889 32 16.2647 32 19.9721C32 23.9345 28.9138 27.3673 25.0037 27.6419Z"
+                      fill="#878A99"
+                    />
+                  </svg>
+                  <p class="text-base font-medium text-[#212529]">
+                    Drop Images here or click to upload.
+                  </p>
+                </div>
+                
+                <div
+                  *ngIf="featuredImages.length > 0"
+                  class="flex flex-wrap gap-3"
+                >
+                  <div
+                    *ngFor="let image of featuredImages; let i = index"
+                    class="relative w-20 h-20"
+                  >
+                    <img
+                      [src]="image.preview"
+                      [alt]="'Featured image ' + (i + 1)"
+                      class="w-20 h-20 rounded object-cover"
+                    />
+                    <button
+                      type="button"
+                      (click)="removeFeaturedImage(i)"
+                      class="absolute -top-[9px] -right-[9px] w-[18px] h-[18px] flex items-center justify-center"
+                      aria-label="Remove image"
+                    >
+                      <svg
+                        width="26"
+                        height="26"
+                        viewBox="0 0 26 26"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style="filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.07))"
+                      >
+                        <circle cx="13" cy="13" r="9" fill="white"/>
+                        <circle cx="13" cy="13" r="8.5" stroke="#878A99"/>
+                        <path
+                          d="M9.31048 16C9.23145 16 9.15241 15.9699 9.09236 15.9095C8.97182 15.7889 8.97182 15.5935 9.09236 15.4729L15.4749 9.09042C15.5954 8.96987 15.7909 8.96987 15.9114 9.09042C16.032 9.21096 16.032 9.4064 15.9114 9.52702L9.52898 15.9095C9.46848 15.9696 9.38945 16 9.31048 16Z"
+                          fill="#686868"
+                        />
+                        <path
+                          d="M15.6934 16C15.6143 16 15.5354 15.9699 15.4753 15.9095L9.09236 9.52702C8.97182 9.4064 8.97182 9.21096 9.09236 9.09042C9.21291 8.96987 9.40835 8.96987 9.52898 9.09042L15.9114 15.4729C16.032 15.5935 16.032 15.7889 15.9114 15.9095C15.8509 15.9696 15.772 16 15.6934 16Z"
+                          fill="#686868"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
                 <input
                   #featuredImagesInput
                   type="file"
@@ -622,16 +675,6 @@ import { FormsModule } from "@angular/forms";
                   class="hidden"
                   (change)="onFeaturedImagesSelected($event)"
                 />
-              </div>
-              <div
-                *ngIf="formData.featuredImages.length > 0"
-                class="mt-2 flex flex-wrap gap-2"
-              >
-                <span
-                  *ngFor="let img of formData.featuredImages"
-                  class="text-sm text-[#212529] bg-gray-100 px-2 py-1 rounded"
-                  >{{ img }}</span
-                >
               </div>
             </div>
           </div>
@@ -714,9 +757,9 @@ export class AddInformationModalComponent {
         url: data.url || "",
         description: data.description || "",
         profileImage: data.profileImage || "",
-        featuredImages: data.featuredImages || [],
       };
       this.profileImagePreview = data.profileImage || "";
+      this.featuredImages = data.featuredImages || [];
     }
   }
   @Output() close = new EventEmitter<void>();
@@ -729,10 +772,10 @@ export class AddInformationModalComponent {
     url: "",
     description: "",
     profileImage: "",
-    featuredImages: [] as string[],
   };
 
   profileImagePreview: string = "";
+  featuredImages: FeaturedImage[] = [];
 
   onClose() {
     this.resetForm();
@@ -741,7 +784,11 @@ export class AddInformationModalComponent {
 
   onSave() {
     if (this.validateForm()) {
-      this.save.emit(this.formData);
+      const saveData = {
+        ...this.formData,
+        featuredImages: this.featuredImages,
+      };
+      this.save.emit(saveData);
       this.resetForm();
     }
   }
@@ -766,12 +813,22 @@ export class AddInformationModalComponent {
   onFeaturedImagesSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const fileNames = Array.from(input.files).map((file) => file.name);
-      this.formData.featuredImages = [
-        ...this.formData.featuredImages,
-        ...fileNames,
-      ];
+      Array.from(input.files).forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.featuredImages.push({
+            file: file,
+            preview: e.target.result,
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+      input.value = '';
     }
+  }
+
+  removeFeaturedImage(index: number) {
+    this.featuredImages.splice(index, 1);
   }
 
   validateForm(): boolean {
@@ -798,8 +855,8 @@ export class AddInformationModalComponent {
       url: "",
       description: "",
       profileImage: "",
-      featuredImages: [],
     };
     this.profileImagePreview = "";
+    this.featuredImages = [];
   }
 }
