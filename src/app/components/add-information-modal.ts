@@ -219,7 +219,7 @@ import { FormsModule } from "@angular/forms";
               <!-- Rich Text Editor Toolbar -->
               <div class="border border-[#CED4DA] rounded">
                 <div class="flex items-center gap-2 px-2 py-[10px] border-b border-[#CED4DA] bg-white rounded-t flex-wrap">
-                  <!-- History buttons -->
+                  <!-- Format buttons -->
                   <div class="flex items-center gap-0.5">
                     <button type="button" class="p-1 hover:bg-gray-100 rounded" title="Undo">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -231,20 +231,12 @@ import { FormsModule } from "@angular/forms";
                         <path d="M7.5 6.25H15.1156L12.8737 4.00875L13.75 3.125L17.5 6.875L13.75 10.625L12.8737 9.74062L15.1137 7.5H7.5C6.50544 7.5 5.55161 7.89509 4.84835 8.59835C4.14509 9.30161 3.75 10.2554 3.75 11.25C3.75 12.2446 4.14509 13.1984 4.84835 13.9017C5.55161 14.6049 6.50544 15 7.5 15H12.5V16.25H7.5C6.17392 16.25 4.90215 15.7232 3.96447 14.7855C3.02678 13.8479 2.5 12.5761 2.5 11.25C2.5 9.92392 3.02678 8.65215 3.96447 7.71447C4.90215 6.77678 6.17392 6.25 7.5 6.25Z" fill="#212529"/>
                       </svg>
                     </button>
-                  </div>
-
-                  <!-- Text style dropdown -->
-                  <div class="flex items-center gap-0.5">
                     <button type="button" class="flex items-center gap-1 px-2 h-7 hover:bg-gray-100 rounded text-sm">
                       <span class="text-[#212529] font-normal">Normal text</span>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 11L3 6.00005L3.7 5.30005L8 9.60005L12.3 5.30005L13 6.00005L8 11Z" fill="#212529"/>
                       </svg>
                     </button>
-                  </div>
-
-                  <!-- Align dropdown -->
-                  <div class="flex items-center gap-0.5">
                     <button type="button" class="flex items-center gap-0.5 px-2 h-7 hover:bg-gray-100 rounded">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.5 3.75H16.25V5H7.5V3.75ZM7.5 7.5H13.75V8.75H7.5V7.5ZM7.5 11.25H16.25V12.5H7.5V11.25ZM7.5 15H13.75V16.25H7.5V15ZM3.75 2.5H5V17.5H3.75V2.5Z" fill="#212529"/>
@@ -253,20 +245,12 @@ import { FormsModule } from "@angular/forms";
                         <path d="M8 11L3 6.00005L3.7 5.30005L8 9.60005L12.3 5.30005L13 6.00005L8 11Z" fill="#212529"/>
                       </svg>
                     </button>
-                  </div>
-
-                  <!-- Color picker -->
-                  <div class="flex items-center gap-0.5">
                     <button type="button" class="flex items-center gap-0.5 px-2 h-7 hover:bg-gray-100 rounded">
                       <div class="w-5 h-5 rounded bg-[#212529] border border-[#212529] opacity-70"></div>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 11L3 6.00005L3.7 5.30005L8 9.60005L12.3 5.30005L13 6.00005L8 11Z" fill="#212529"/>
                       </svg>
                     </button>
-                  </div>
-
-                  <!-- Format buttons -->
-                  <div class="flex items-center gap-0.5">
                     <button type="button" class="p-1 hover:bg-gray-100 rounded" title="Bold">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11.4062 15.625H5.625V4.375H10.9375C11.5639 4.37504 12.1771 4.55435 12.7048 4.89174C13.2325 5.22914 13.6526 5.71052 13.9155 6.27903C14.1784 6.84754 14.2731 7.47942 14.1884 8.10001C14.1037 8.72061 13.8431 9.30399 13.4375 9.78125C13.9673 10.205 14.3528 10.7825 14.5408 11.4344C14.7289 12.0862 14.7102 12.7803 14.4875 13.4211C14.2647 14.0619 13.8488 14.6179 13.297 15.0126C12.7452 15.4073 12.0847 15.6213 11.4062 15.625ZM7.5 13.75H11.3937C11.5784 13.75 11.7613 13.7136 11.9319 13.643C12.1025 13.5723 12.2575 13.4687 12.3881 13.3381C12.5187 13.2075 12.6223 13.0525 12.693 12.8819C12.7636 12.7113 12.8 12.5284 12.8 12.3438C12.8 12.1591 12.7636 11.9762 12.693 11.8056C12.6223 11.635 12.5187 11.48 12.3881 11.3494C12.2575 11.2188 12.1025 11.1152 11.9319 11.0445C11.7613 10.9739 11.5784 10.9375 11.3937 10.9375H7.5V13.75ZM7.5 9.0625H10.9375C11.1222 9.0625 11.305 9.02613 11.4756 8.95546C11.6463 8.88478 11.8013 8.7812 11.9319 8.65062C12.0625 8.52004 12.166 8.36501 12.2367 8.1944C12.3074 8.02378 12.3438 7.84092 12.3438 7.65625C12.3438 7.47158 12.3074 7.28872 12.2367 7.1181C12.166 6.94749 12.0625 6.79246 11.9319 6.66188C11.8013 6.5313 11.6463 6.42772 11.4756 6.35704C11.305 6.28637 11.1222 6.25 10.9375 6.25H7.5V9.0625Z" fill="#212529"/>
