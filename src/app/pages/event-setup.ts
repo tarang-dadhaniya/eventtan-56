@@ -10,11 +10,13 @@ import {
 } from "../components/event-detail-sidebar";
 import { AddScheduleModalComponent } from "../components/add-schedule-modal";
 import { AddExhibitorModalComponent } from "../components/add-exhibitor-modal";
+import { AddSpeakersModalComponent } from "../components/add-speakers-modal";
 import { ConfirmDeleteModalComponent } from "../components/confirm-delete-modal";
 import { AboutDetailModalComponent } from "../components/about-detail-modal";
 import { AddInformationModalComponent } from "../components/add-information-modal";
 import { ScheduleService, Schedule } from "../services/schedule.service";
 import { ExhibitorService, Exhibitor } from "../services/exhibitor.service";
+import { SpeakerService, Speaker } from "../services/speaker.service";
 import {
   InformationService,
   Information,
