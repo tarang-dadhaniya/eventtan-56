@@ -2605,6 +2605,15 @@ const EVENT_OVERVIEW_ICON = `<svg width="22" height="22" viewBox="0 0 22 22" fil
       (close)="closeInformationModal()"
       (save)="onInformationSave($event)"
     ></app-add-information-modal>
+
+    <!-- Add Speakers Modal -->
+    <app-add-speakers-modal
+      [isOpen]="isAddSpeakersModalOpen"
+      [editMode]="editModeSpeaker"
+      [speakerData]="editingSpeaker"
+      (close)="closeAddSpeakersModal()"
+      (save)="onSpeakerSave($event)"
+    ></app-add-speakers-modal>
   `,
   styles: [
     `
