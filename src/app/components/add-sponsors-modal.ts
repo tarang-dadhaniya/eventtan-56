@@ -788,7 +788,7 @@ import { FormsModule } from "@angular/forms";
             <button
               type="button"
               (click)="onCancel()"
-              class="flex items-center justify-center gap-3 h-9 px-4 rounded hover:bg-gray-50 transition-colors"
+              class="flex items-center justify-center gap-3 h-9 px-4 rounded bg-[#DEE1EB] hover:bg-[#CED1DB] transition-colors"
             >
               <svg
                 width="12"
