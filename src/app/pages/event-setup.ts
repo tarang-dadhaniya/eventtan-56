@@ -3219,6 +3219,14 @@ const EVENT_OVERVIEW_ICON = `<svg width="22" height="22" viewBox="0 0 22 22" fil
       (close)="closeSocialMediaModal()"
       (submit)="onSocialMediaSave($event)"
     ></app-add-social-media-modal>
+
+    <!-- Add Image Gallery Modal -->
+    <app-add-image-gallery-modal
+      [isOpen]="isImageGalleryModalOpen"
+      [editingImage]="editingGalleryImage"
+      (close)="closeImageGalleryModal()"
+      (save)="onImageGallerySave($event)"
+    ></app-add-image-gallery-modal>
   `,
   styles: [
     `
