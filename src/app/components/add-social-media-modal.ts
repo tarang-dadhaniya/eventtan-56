@@ -201,7 +201,7 @@ import { FormsModule } from "@angular/forms";
                 <!-- Blog/Rss URL -->
                 <div *ngIf="formData.socialMedia.blogRss" class="relative" w-[50px] h-[50px]>
                   <div
-                    class="absolute left-0 top-0  bg-[#F5F5F5] rounded-l flex items-center justify-center pointer-events-none z-10"
+                    class="absolute left-[2px] top-[2px] w-[46px] h-[46px]  bg-[#F5F5F5] rounded-l flex items-center justify-center pointer-events-none z-10"
                   >
                     <svg
                       width="22"
@@ -241,9 +241,9 @@ import { FormsModule } from "@angular/forms";
                 </div>
 
                 <!-- Facebook URL -->
-                <div *ngIf="formData.socialMedia.facebook" class="relative">
+                <div *ngIf="formData.socialMedia.facebook" class="relative" w-[50px] h-[50px]>
                   <div
-                    class="absolute left-0 top-0 w-[50px] h-[50px] bg-[#F5F5F5] rounded-l flex items-center justify-center pointer-events-none z-10"
+                    class="absolute left-[2px] top-[2px] w-[46px] h-[46px] bg-[#F5F5F5] rounded-l flex items-center justify-center pointer-events-none z-10"
                   >
                     <svg
                       width="22"
@@ -275,9 +275,9 @@ import { FormsModule } from "@angular/forms";
                 </div>
 
                 <!-- Twitter URL -->
-                <div *ngIf="formData.socialMedia.twitter" class="relative">
+                <div *ngIf="formData.socialMedia.twitter" class="relative" w-[50px] h-[50px]>
                   <div
-                    class="absolute left-0 top-0 w-[50px] h-[50px] bg-[#F5F5F5] rounded-l flex items-center justify-center pointer-events-none z-10"
+                    class="absolute left-[2px] top-[2px] w-[46px] h-[46px] bg-[#F5F5F5] rounded-l flex items-center justify-center pointer-events-none z-10"
                   >
                     <svg
                       width="22"
