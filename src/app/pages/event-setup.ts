@@ -4035,6 +4035,47 @@ export class EventSetupComponent implements OnInit {
     );
   }
 
+  loadGalleryImages() {
+    this.galleryImages = this.imageGalleryService.getGalleryImagesByEvent(
+      this.eventId,
+    );
+  }
+
+  openImageGalleryModal() {
+    this.editingGalleryImage = null;
+    this.isImageGalleryModalOpen = true;
+  }
+
+  closeImageGalleryModal() {
+    this.isImageGalleryModalOpen = false;
+    this.editingGalleryImage = null;
+  }
+
+  onImageGallerySave(imageData: Omit<GalleryImage, "id" | "eventId" | "createdAt">) {
+    if (this.editingGalleryImage) {
+      this.imageGalleryService.updateGalleryImage(
+        this.editingGalleryImage.id,
+        imageData,
+      );
+    } else {
+      this.imageGalleryService.addGalleryImage(this.eventId, imageData);
+    }
+    this.loadGalleryImages();
+    this.closeImageGalleryModal();
+  }
+
+  editGalleryImage(image: GalleryImage) {
+    this.editingGalleryImage = image;
+    this.isImageGalleryModalOpen = true;
+  }
+
+  deleteGalleryImage(id: string) {
+    if (confirm("Are you sure you want to delete this image?")) {
+      this.imageGalleryService.deleteGalleryImage(id);
+      this.loadGalleryImages();
+    }
+  }
+
   deleteSocialMedia(id: string) {
     this.socialMediaToDelete = id;
     this.isDeleteModalOpen = true;
