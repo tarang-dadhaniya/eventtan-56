@@ -28,6 +28,11 @@ import {
   SocialMediaService,
   SocialMediaEntry,
 } from "../services/social-media.service";
+import {
+  ImageGalleryService,
+  GalleryImage,
+} from "../services/image-gallery.service";
+import { AddImageGalleryModalComponent } from "../components/add-image-gallery-modal";
 
 const DASHBOARD_ICON = `<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M9.11972 1.77151C8.15614 1.4095 7.09392 1.4095 6.13033 1.77151C5.5251 1.99889 4.94006 2.45532 3.51022 3.59919L1.21855 5.43253C0.895102 5.69128 0.423133 5.63884 0.164376 5.3154C-0.0943811 4.99195 -0.0419401 4.51998 0.281506 4.26122L2.57317 2.42789C2.61283 2.39616 2.65202 2.36481 2.69075 2.33381C3.96492 1.31414 4.74565 0.689359 5.6028 0.367335C6.90647 -0.122445 8.34359 -0.122445 9.64726 0.367335C10.5044 0.689359 11.2851 1.31414 12.5593 2.33381C12.598 2.3648 12.6372 2.39616 12.6769 2.42789L14.9685 4.26122C15.292 4.51998 15.3444 4.99195 15.0857 5.3154C14.8269 5.63884 14.355 5.69128 14.0315 5.43253L11.7398 3.59919C10.31 2.45532 9.72496 1.99889 9.11972 1.77151Z" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M4.08565 0.281506C4.34441 0.604953 4.29197 1.07692 3.96852 1.33568L3.51019 1.70235C3.09253 2.03647 2.92421 2.17224 2.77968 2.31347C2.06537 3.01148 1.61969 3.93876 1.52086 4.93259C1.50087 5.13368 1.5 5.34993 1.5 5.88479V11.2C1.5 13.3171 3.21624 15.0334 5.33334 15.0334C5.93164 15.0334 6.41667 14.5483 6.41667 13.95V10.2833C6.41667 8.35031 7.98367 6.78331 9.91667 6.78331C11.8497 6.78331 13.4167 8.35031 13.4167 10.2833V13.95C13.4167 14.5483 13.9017 15.0334 14.5 15.0334C16.6171 15.0334 18.3333 13.3171 18.3333 11.2V5.88479C18.3333 5.34993 18.3325 5.13368 18.3125 4.93259C18.2136 3.93876 17.7679 3.01148 17.0536 2.31347C16.9091 2.17224 16.7408 2.03647 16.3231 1.70235L15.8648 1.33568C15.5413 1.07692 15.4889 0.604953 15.7477 0.281506C16.0064 -0.0419405 16.4784 -0.0943815 16.8018 0.164376L17.2748 0.541868C17.6571 0.856916 17.886 1.04452 18.0782 1.23375C19.0199 2.16224 19.5996 3.40171 19.7171 4.72041C19.7394 4.94668 19.7496 5.18893 19.7543 5.59686L19.75 5.88479V11.2C19.75 14.0997 17.3997 16.45 14.5 16.45C13.1193 16.45 11.9167 15.2473 11.9167 13.8667V10.2C11.9167 9.19579 11.087 8.38331 10.0667 8.38331C9.04634 8.38331 8.21667 9.19579 8.21667 10.2V13.8667C8.21667 15.2473 7.01401 16.45 5.63334 16.45C2.73357 16.45 0.383333 14.0997 0.383333 11.2V5.88479L0.379004 5.59686C0.383737 5.18893 0.393911 4.94668 0.416226 4.72041C0.533719 3.40171 1.11338 2.16224 2.05508 1.23375C2.24733 1.04452 2.47622 0.856916 2.85854 0.541868L3.33152 0.164376C3.65497 -0.0943815 4.12694 -0.0419405 4.38565 0.281506Z" fill="white"/></svg>`;
 
@@ -50,6 +55,7 @@ const EVENT_OVERVIEW_ICON = `<svg width="22" height="22" viewBox="0 0 22 22" fil
     AddInformationModalComponent,
     AddSponsorsModalComponent,
     AddSocialMediaModalComponent,
+    AddImageGalleryModalComponent,
   ],
   template: `
     <div class="flex h-screen overflow-hidden bg-main-bg">
@@ -2995,6 +3001,204 @@ const EVENT_OVERVIEW_ICON = `<svg width="22" height="22" viewBox="0 0 22 22" fil
                     </div>
                   </div>
 
+                  <!-- Image Gallery Content -->
+                  <div
+                    *ngIf="
+                      activeFeatures.length > 0 &&
+                      activeFeatures[selectedFeatureIndex] === 'image-gallery'
+                    "
+                    class="bg-white rounded shadow-md border border-[#E9E9E9]"
+                  >
+                    <!-- Header -->
+                    <div
+                      class="px-6 md:px-8 py-6 border-b border-[#CED4DA] flex items-center justify-between"
+                    >
+                      <h2
+                        class="text-xl md:text-2xl font-medium text-[#686868]"
+                      >
+                        Image Gallery
+                      </h2>
+                      <button
+                        (click)="openImageGalleryModal()"
+                        class="flex items-center gap-2 px-4 md:px-6 py-2 bg-[#009FD8] hover:bg-[#0385b5] text-white rounded font-semibold transition-colors text-sm md:text-base"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12 5V19"
+                            stroke="white"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M5 12H19"
+                            stroke="white"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span>Add Image</span>
+                      </button>
+                    </div>
+
+                    <!-- Gallery Grid -->
+                    <div class="p-6 md:p-8">
+                      <div
+                        *ngIf="galleryImages.length === 0"
+                        class="flex flex-col items-center justify-center py-16 text-center"
+                      >
+                        <div
+                          class="w-16 h-16 mb-4 flex items-center justify-center bg-[#F0F7FB] rounded-lg"
+                        >
+                          <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clip-path="url(#clip0_258_4081)">
+                              <path
+                                d="M28.25 0H3.75C1.68225 0 0 1.68225 0 3.75V28.25C0 30.3177 1.68225 32 3.75 32H28.25C30.3177 32 32 30.3177 32 28.25V3.75C32 1.68225 30.3177 0 28.25 0ZM3.75 2.5H28.25C28.9393 2.5 29.5 3.06075 29.5 3.75V22.1072L25.2454 17.8526C23.7833 16.3905 21.4042 16.3905 19.9421 17.8526L18.5625 19.2323L14.6829 15.3526C13.2208 13.8905 10.8418 13.8905 9.37956 15.3526L2.5 22.2322V3.75C2.5 3.06075 3.06075 2.5 3.75 2.5ZM28.25 29.5H3.75C3.06075 29.5 2.5 28.9393 2.5 28.25V25.7678L11.1473 17.1204C11.6348 16.6331 12.4277 16.6331 12.9151 17.1204L18.5625 22.7677L21.7099 19.6204C22.1972 19.133 22.9902 19.133 23.4776 19.6204L29.5 25.6428V28.25C29.5 28.9393 28.9393 29.5 28.25 29.5ZM20.25 12.5C22.3177 12.5 24 10.8177 24 8.75C24 6.68225 22.3177 5 20.25 5C18.1823 5 16.5 6.68225 16.5 8.75C16.5 10.8177 18.1823 12.5 20.25 12.5ZM20.25 7.5C20.9393 7.5 21.5 8.06075 21.5 8.75C21.5 9.43925 20.9393 10 20.25 10C19.5607 10 19 9.43925 19 8.75C19 8.06075 19.5607 7.5 20.25 7.5Z"
+                                fill="#049AD0"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_258_4081">
+                                <rect width="32" height="32" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        </div>
+                        <p class="text-[#878A99] text-lg">
+                          No images added. Click "Add Image" to get started.
+                        </p>
+                      </div>
+
+                      <div
+                        *ngIf="galleryImages.length > 0"
+                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+                      >
+                        <div
+                          *ngFor="let image of galleryImages"
+                          class="flex flex-col"
+                        >
+                          <!-- Image Card -->
+                          <div
+                            class="bg-white border border-[#E7E7E7] rounded-[4px] overflow-hidden"
+                          >
+                            <!-- Image Container -->
+                            <div
+                              class="relative w-full bg-gray-100 overflow-hidden"
+                              style="aspect-ratio: 274/152;"
+                            >
+                              <img
+                                [src]="image.imageUrl"
+                                [alt]="image.title"
+                                class="w-full h-full object-cover rounded-[4px] m-[11px] box-content"
+                                style="width: calc(100% - 22px); height: calc(100% - 22px);"
+                              />
+
+                              <!-- Actions Overlay -->
+                              <div
+                                class="absolute top-[11px] right-[11px] flex gap-[6px]"
+                              >
+                                <!-- Edit Button -->
+                                <button
+                                  (click)="editGalleryImage(image)"
+                                  class="w-[35px] h-[35px] rounded-full bg-white flex items-center justify-center hover:opacity-90 transition-opacity"
+                                  style="filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.05));"
+                                  aria-label="Edit image"
+                                >
+                                  <svg
+                                    width="17"
+                                    height="17"
+                                    viewBox="0 0 18 18"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      fill-rule="evenodd"
+                                      clip-rule="evenodd"
+                                      d="M15.3215 1.96389C14.4716 1.11393 13.0936 1.11392 12.2436 1.96389L11.0249 3.18257L5.28916 8.91826C5.19618 9.01126 5.13023 9.12778 5.09833 9.25532L4.37284 12.1573C4.31103 12.4045 4.38347 12.6661 4.56367 12.8462C4.74387 13.0264 5.0054 13.0989 5.25263 13.0371L8.15456 12.3116C8.28218 12.2797 8.39862 12.2137 8.49162 12.1207L14.1856 6.42676L15.446 5.16636C16.296 4.31639 16.296 2.93833 15.446 2.08836L15.3215 1.96389ZM13.2696 2.98989C13.5529 2.70657 14.0122 2.70657 14.2955 2.98989L14.42 3.11436C14.7033 3.39768 14.7033 3.85704 14.42 4.14036L13.6826 4.87784L12.5542 3.70531L13.2696 2.98989ZM11.5279 4.73149L12.6564 5.90402L7.60776 10.9527L6.07376 11.3362L6.45725 9.80219L11.5279 4.73149ZM2.9002 5.80383C2.9002 5.40316 3.22502 5.07834 3.62569 5.07834H7.25314C7.65383 5.07834 7.97863 4.75353 7.97863 4.35285C7.97863 3.95218 7.65383 3.62736 7.25314 3.62736H3.62569C2.42366 3.62736 1.44922 4.6018 1.44922 5.80383V13.7842C1.44922 14.9863 2.42366 15.9607 3.62569 15.9607H11.6061C12.8081 15.9607 13.7826 14.9863 13.7826 13.7842V10.1567C13.7826 9.75613 13.4578 9.43125 13.0571 9.43125C12.6564 9.43125 12.3316 9.75613 12.3316 10.1567V13.7842C12.3316 14.1849 12.0068 14.5097 11.6061 14.5097H3.62569C3.22502 14.5097 2.9002 14.1849 2.9002 13.7842V5.80383Z"
+                                      fill="#282A36"
+                                    />
+                                  </svg>
+                                </button>
+
+                                <!-- Delete Button -->
+                                <button
+                                  (click)="deleteGalleryImage(image.id)"
+                                  class="w-[35px] h-[35px] rounded-full bg-[#BF0505] flex items-center justify-center hover:bg-[#a00404] transition-colors"
+                                  style="filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.05));"
+                                  aria-label="Delete image"
+                                >
+                                  <svg
+                                    width="17"
+                                    height="17"
+                                    viewBox="0 0 18 18"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <g clip-path="url(#clip0_1690_9368)">
+                                      <path
+                                        d="M13.7847 5.07837C13.5923 5.07837 13.4078 5.1548 13.2717 5.29086C13.1356 5.42692 13.0592 5.61145 13.0592 5.80386V13.9228C13.0384 14.2897 12.8735 14.6335 12.6003 14.8793C12.3272 15.1251 11.968 15.253 11.601 15.2352H5.81156C5.44453 15.253 5.08533 15.1251 4.8122 14.8793C4.53907 14.6335 4.37414 14.2897 4.35332 13.9228V5.80386C4.35332 5.61145 4.27689 5.42692 4.14083 5.29086C4.00478 5.1548 3.82025 5.07837 3.62783 5.07837C3.43542 5.07837 3.25089 5.1548 3.11484 5.29086C2.97878 5.42692 2.90234 5.61145 2.90234 5.80386V13.9228C2.92305 14.6746 3.24084 15.3875 3.78612 15.9055C4.3314 16.4234 5.05971 16.7042 5.81156 16.6862H11.601C12.3528 16.7042 13.0811 16.4234 13.6264 15.9055C14.1717 15.3875 14.4895 14.6746 14.5102 13.9228V5.80386C14.5102 5.61145 14.4338 5.42692 14.2977 5.29086C14.1616 5.1548 13.9771 5.07837 13.7847 5.07837Z"
+                                        fill="white"
+                                      />
+                                      <path
+                                        d="M14.5091 2.90206H11.6072V1.45108C11.6072 1.25866 11.5307 1.07413 11.3947 0.938077C11.2586 0.802021 11.0741 0.725586 10.8817 0.725586H6.52872C6.33631 0.725586 6.15178 0.802021 6.01572 0.938077C5.87967 1.07413 5.80323 1.25866 5.80323 1.45108V2.90206H2.90127C2.70886 2.90206 2.52433 2.97849 2.38827 3.11455C2.25222 3.2506 2.17578 3.43513 2.17578 3.62755C2.17578 3.81996 2.25222 4.00449 2.38827 4.14055C2.52433 4.2766 2.70886 4.35304 2.90127 4.35304H14.5091C14.7015 4.35304 14.8861 4.2766 15.0221 4.14055C15.1582 4.00449 15.2346 3.81996 15.2346 3.62755C15.2346 3.43513 15.1582 3.2506 15.0221 3.11455C14.8861 2.97849 14.7015 2.90206 14.5091 2.90206ZM7.25421 2.90206V2.17657H10.1562V2.90206H7.25421Z"
+                                        fill="white"
+                                      />
+                                      <path
+                                        d="M7.98223 12.3332V7.25479C7.98223 7.06238 7.90579 6.87784 7.76974 6.74179C7.63368 6.60573 7.44915 6.5293 7.25674 6.5293C7.06433 6.5293 6.8798 6.60573 6.74374 6.74179C6.60769 6.87784 6.53125 7.06238 6.53125 7.25479V12.3332C6.53125 12.5256 6.60769 12.7102 6.74374 12.8462C6.8798 12.9823 7.06433 13.0587 7.25674 13.0587C7.44915 13.0587 7.63368 12.9823 7.76974 12.8462C7.90579 12.7102 7.98223 12.5256 7.98223 12.3332Z"
+                                        fill="white"
+                                      />
+                                      <path
+                                        d="M10.8807 12.3332V7.25479C10.8807 7.06238 10.8042 6.87784 10.6682 6.74179C10.5321 6.60573 10.3476 6.5293 10.1552 6.5293C9.96277 6.5293 9.77823 6.60573 9.64218 6.74179C9.50612 6.87784 9.42969 7.06238 9.42969 7.25479V12.3332C9.42969 12.5256 9.50612 12.7102 9.64218 12.8462C9.77823 12.9823 9.96277 13.0587 10.1552 13.0587C10.3476 13.0587 10.5321 12.9823 10.6682 12.8462C10.8042 12.7102 10.8807 12.5256 10.8807 12.3332Z"
+                                        fill="white"
+                                      />
+                                    </g>
+                                    <defs>
+                                      <clipPath id="clip0_1690_9368">
+                                        <rect
+                                          width="17.4118"
+                                          height="17.4118"
+                                          fill="white"
+                                        />
+                                      </clipPath>
+                                    </defs>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+
+                            <!-- Image Title -->
+                            <div class="p-4 text-center">
+                              <h3
+                                class="text-base font-medium text-[#282A36] line-clamp-2"
+                              >
+                                {{ image.title }}
+                              </h3>
+                              <p
+                                *ngIf="image.caption"
+                                class="text-sm text-[#686868] mt-1 line-clamp-1"
+                              >
+                                {{ image.caption }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Other Features Placeholder -->
                   <div
                     *ngIf="
@@ -3005,7 +3209,8 @@ const EVENT_OVERVIEW_ICON = `<svg width="22" height="22" viewBox="0 0 22 22" fil
                       activeFeatures[selectedFeatureIndex] !== 'information' &&
                       activeFeatures[selectedFeatureIndex] !== 'speakers' &&
                       activeFeatures[selectedFeatureIndex] !== 'sponsors' &&
-                      activeFeatures[selectedFeatureIndex] !== 'social-media'
+                      activeFeatures[selectedFeatureIndex] !== 'social-media' &&
+                      activeFeatures[selectedFeatureIndex] !== 'image-gallery'
                     "
                     class="flex flex-col items-center justify-center py-16 text-center"
                   >
@@ -3216,6 +3421,14 @@ const EVENT_OVERVIEW_ICON = `<svg width="22" height="22" viewBox="0 0 22 22" fil
       (close)="closeSocialMediaModal()"
       (submit)="onSocialMediaSave($event)"
     ></app-add-social-media-modal>
+
+    <!-- Add Image Gallery Modal -->
+    <app-add-image-gallery-modal
+      [isOpen]="isImageGalleryModalOpen"
+      [editingImage]="editingGalleryImage"
+      (close)="closeImageGalleryModal()"
+      (save)="onImageGallerySave($event)"
+    ></app-add-image-gallery-modal>
   `,
   styles: [
     `
@@ -3267,6 +3480,7 @@ export class EventSetupComponent implements OnInit {
   isInformationModalOpen = false;
   isSponsorsModalOpen = false;
   isSocialMediaModalOpen = false;
+  isImageGalleryModalOpen = false;
   editAboutContent = false;
   eventId: string = "";
   schedules: Schedule[] = [];
@@ -3275,6 +3489,7 @@ export class EventSetupComponent implements OnInit {
   information: Information[] = [];
   sponsors: Sponsor[] = [];
   socialMediaList: SocialMediaEntry[] = [];
+  galleryImages: GalleryImage[] = [];
   searchQuery: string = "";
   editMode = false;
   editModeExhibitor = false;
@@ -3295,6 +3510,7 @@ export class EventSetupComponent implements OnInit {
   sponsorToDelete: string | null = null;
   socialMediaToDelete: string | null = null;
   editingSocialMedia: SocialMediaEntry | null = null;
+  editingGalleryImage: GalleryImage | null = null;
   aboutTitle: string = "About ENGIMACH 2023";
   aboutDescription: string =
     "After the rousing success of the 2021 edition, the expectations from ENGIMACH 2023 have also risen. India is the only large economy expected to grow significantly in the coming years. India is also fast emerging as a preferred manufacturing base in a world seeking reliable supply chains. On the other hand, Indian industry seeks more foreign investments, technology, exports and domestic demand. In this context, ENGIMACH 2023 is expected to be a major catalyst of economic growth and generate significant and lasting business outcomes.";
@@ -3460,6 +3676,7 @@ export class EventSetupComponent implements OnInit {
     private informationService: InformationService,
     private sponsorService: SponsorService,
     private socialMediaService: SocialMediaService,
+    private imageGalleryService: ImageGalleryService,
   ) {}
 
   getSafeHtml(html: string): SafeHtml {
@@ -3481,6 +3698,7 @@ export class EventSetupComponent implements OnInit {
     this.loadInformation();
     this.loadSponsors();
     this.loadSocialMedia();
+    this.loadGalleryImages();
 
     this.updateActiveRoute();
 
@@ -4025,6 +4243,49 @@ export class EventSetupComponent implements OnInit {
     this.socialMediaList = this.socialMediaService.getSocialMediaByEvent(
       this.eventId,
     );
+  }
+
+  loadGalleryImages() {
+    this.galleryImages = this.imageGalleryService.getGalleryImagesByEvent(
+      this.eventId,
+    );
+  }
+
+  openImageGalleryModal() {
+    this.editingGalleryImage = null;
+    this.isImageGalleryModalOpen = true;
+  }
+
+  closeImageGalleryModal() {
+    this.isImageGalleryModalOpen = false;
+    this.editingGalleryImage = null;
+  }
+
+  onImageGallerySave(
+    imageData: Omit<GalleryImage, "id" | "eventId" | "createdAt">,
+  ) {
+    if (this.editingGalleryImage) {
+      this.imageGalleryService.updateGalleryImage(
+        this.editingGalleryImage.id,
+        imageData,
+      );
+    } else {
+      this.imageGalleryService.addGalleryImage(this.eventId, imageData);
+    }
+    this.loadGalleryImages();
+    this.closeImageGalleryModal();
+  }
+
+  editGalleryImage(image: GalleryImage) {
+    this.editingGalleryImage = image;
+    this.isImageGalleryModalOpen = true;
+  }
+
+  deleteGalleryImage(id: string) {
+    if (confirm("Are you sure you want to delete this image?")) {
+      this.imageGalleryService.deleteGalleryImage(id);
+      this.loadGalleryImages();
+    }
   }
 
   deleteSocialMedia(id: string) {
