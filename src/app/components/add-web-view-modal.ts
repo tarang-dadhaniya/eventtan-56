@@ -282,9 +282,23 @@ export class AddWebViewModalComponent {
 
   ngOnChanges() {
     if (this.editMode && this.editingWebView) {
+      let floorPlanFor = (this.editingWebView as any).floorPlanFor || "";
+
+      // If floorPlanFor is not set but floorPlanTypes exists, derive it from floorPlanTypes
+      if (!floorPlanFor && this.editingWebView.floorPlanTypes) {
+        if (this.editingWebView.floorPlanTypes.includes("mobile") &&
+            this.editingWebView.floorPlanTypes.includes("desktop")) {
+          floorPlanFor = "Both";
+        } else if (this.editingWebView.floorPlanTypes.includes("mobile")) {
+          floorPlanFor = "Mobile";
+        } else if (this.editingWebView.floorPlanTypes.includes("desktop")) {
+          floorPlanFor = "Web";
+        }
+      }
+
       this.formData = {
         title: this.editingWebView.title,
-        floorPlanFor: (this.editingWebView as any).floorPlanFor || "",
+        floorPlanFor: floorPlanFor,
         type: this.editingWebView.type,
         url: (this.editingWebView as any).url || "",
         fileName: (this.editingWebView as any).fileName || "",
