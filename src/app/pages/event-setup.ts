@@ -3985,6 +3985,20 @@ export class EventSetupComponent implements OnInit {
     return this.activeFeatures.includes(featureId);
   }
 
+  selectFeature(index: number) {
+    this.selectedFeatureIndex = index;
+    this.autoOpenModalForFeature();
+  }
+
+  autoOpenModalForFeature() {
+    const currentFeature = this.activeFeatures[this.selectedFeatureIndex];
+    if (currentFeature === "social-media") {
+      this.openAddSocialMediaModal();
+    } else if (currentFeature === "testimonials") {
+      this.openAddTestimonialsModal();
+    }
+  }
+
   loadActiveFeatures() {
     const saved = localStorage.getItem(`activeFeatures_${this.eventId}`);
     if (saved) {
