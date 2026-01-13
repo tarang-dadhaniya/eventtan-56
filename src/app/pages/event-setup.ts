@@ -3864,6 +3864,7 @@ export class EventSetupComponent implements OnInit {
     this.loadInformation();
     this.loadSponsors();
     this.loadSocialMedia();
+    this.loadTestimonials();
     this.loadGalleryImages();
 
     this.updateActiveRoute();
