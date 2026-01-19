@@ -78,12 +78,9 @@ import { WebView } from "../services/web-view.service";
                   <option value="" disabled selected hidden>
                     Please Select
                   </option>
-                  <option value="Hall A">Hall A</option>
-                  <option value="Hall B">Hall B</option>
-                  <option value="Hall C">Hall C</option>
-                  <option value="Main Lobby">Main Lobby</option>
-                  <option value="Conference Room 1">Conference Room 1</option>
-                  <option value="Conference Room 2">Conference Room 2</option>
+                  <option value="Mobile">Mobile</option>
+                  <option value="Web">Web</option>
+                  <option value="Both">Both</option>
                 </select>
                 <div
                   class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none"
@@ -285,9 +282,23 @@ export class AddWebViewModalComponent {
 
   ngOnChanges() {
     if (this.editMode && this.editingWebView) {
+      let floorPlanFor = (this.editingWebView as any).floorPlanFor || "";
+
+      // If floorPlanFor is not set but floorPlanTypes exists, derive it from floorPlanTypes
+      if (!floorPlanFor && this.editingWebView.floorPlanTypes) {
+        if (this.editingWebView.floorPlanTypes.includes("mobile") &&
+            this.editingWebView.floorPlanTypes.includes("desktop")) {
+          floorPlanFor = "Both";
+        } else if (this.editingWebView.floorPlanTypes.includes("mobile")) {
+          floorPlanFor = "Mobile";
+        } else if (this.editingWebView.floorPlanTypes.includes("desktop")) {
+          floorPlanFor = "Web";
+        }
+      }
+
       this.formData = {
         title: this.editingWebView.title,
-        floorPlanFor: (this.editingWebView as any).floorPlanFor || "",
+        floorPlanFor: floorPlanFor,
         type: this.editingWebView.type,
         url: (this.editingWebView as any).url || "",
         fileName: (this.editingWebView as any).fileName || "",
@@ -344,14 +355,23 @@ export class AddWebViewModalComponent {
       // }
     }
 
+    // Map the selected floor plan to floorPlanTypes array
+    let floorPlanTypes: string[] = [];
+    if (this.formData.floorPlanFor === "Mobile") {
+      floorPlanTypes = ["mobile"];
+    } else if (this.formData.floorPlanFor === "Web") {
+      floorPlanTypes = ["desktop"];
+    } else if (this.formData.floorPlanFor === "Both") {
+      floorPlanTypes = ["mobile", "desktop"];
+    }
+
     const webViewData = {
       title: this.formData.title,
       floorPlanFor: this.formData.floorPlanFor,
       type: this.formData.type,
       url: this.formData.type === "External" ? this.formData.url : "",
       fileName: this.formData.type === "Standard" ? this.formData.fileName : "",
-      // Keep the floorPlanTypes for backward compatibility
-      floorPlanTypes: ["mobile", "desktop"],
+      floorPlanTypes: floorPlanTypes,
     };
 
     this.save.emit(webViewData);
